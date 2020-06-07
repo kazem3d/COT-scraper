@@ -29,14 +29,17 @@ curser.execute('''
     long TEXT  ,
     short TEXT,
     long_change TEXT,
-    short_change TEXT
+    short_change TEXT,
+    long_change_percent TEXT,
+    short_change_percent TEXT,
+    net_position TEXT
 
     );''')
 
 #function for writing a tupel in main table
 def record_in_database(data_tupel):
 
-    curser.execute('INSERT INTO main (currency,date,long,short,long_change,short_change)  VALUES (?,?,?,?,?,?)' ,data_tupel)
+    curser.execute('INSERT INTO main (currency,date,long,short,long_change,short_change,long_change_percent,short_change_percent,net_position)  VALUES (?,?,?,?,?,?,?,?,?)' ,data_tupel)
     conn.commit()
 
 currency_list=[
@@ -59,7 +62,7 @@ sheet_name_obj=[]
 for i in sheet_name:
     sheet_name_obj.append(wb.add_sheet(i))
 
-sheet_header_list=['name','date','long','short','change_long','change_short']
+sheet_header_list=['name','date','long','short','change_long','change_short','long_change_percent','short_change_percent','net_position']
 
 
 for currency_id, currency_name in enumerate(currency_list) :
@@ -75,7 +78,10 @@ for currency_id, currency_name in enumerate(currency_list) :
 
         if row[0] == currency_name:
             print(row[0],row[2],row[8],row[9],row[38],row[39])
-            row_tuple=(row[0],row[2],row[8],row[9],row[38],row[39])
+            long_change_percent=(row[38]/(row[8]-row[38]))
+            short_change_percent=(row[39]/(row[9]-row[39]))
+            net_position=row[8]-row[9]
+            row_tuple=(row[0],row[2],row[8],row[9],row[38],row[39],long_change_percent,short_change_percent,net_position,)
             record_in_database(row_tuple)
             for cell,cell_data in enumerate(row_tuple) :
                 sheet_name_obj[currency_id].write(row_id+1, cell,cell_data) 
