@@ -52,6 +52,18 @@ currency_list=[
     'AUSTRALIAN DOLLAR - CHICAGO MERCANTILE EXCHANGE',
 ]
 
+currency_dict={
+    'JAPANESE YEN - CHICAGO MERCANTILE EXCHANGE':'JPY',
+    'SWISS FRANC - CHICAGO MERCANTILE EXCHANGE':'CHF',
+    'CANADIAN DOLLAR - CHICAGO MERCANTILE EXCHANGE':'CAD',
+    'BRITISH POUND STERLING - CHICAGO MERCANTILE EXCHANGE':'GBP',
+    'U.S. DOLLAR INDEX - ICE FUTURES U.S.':'USD',
+    'EURO FX - CHICAGO MERCANTILE EXCHANGE':'EUR',
+    'NEW ZEALAND DOLLAR - CHICAGO MERCANTILE EXCHANGE':'NZD',
+    'AUSTRALIAN DOLLAR - CHICAGO MERCANTILE EXCHANGE':'AUD',
+
+
+}
 sheet_name=['JPY','CHF','CAD','GBP','USD','EUR','NZD','AUD']
 # Workbook is created 
 wb = Workbook() 
@@ -76,6 +88,8 @@ for currency_id, currency_name in enumerate(currency_list) :
         row=sheet.row_values(i)
 
         if row[0] == currency_name:
+
+            row[0]=currency_dict[row[0]]
 
             row[8]=int(row[8])
             row[9]=int(row[9])
