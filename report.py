@@ -2,9 +2,8 @@ import xlrd
 import sqlite3
 import xlwt 
 from xlwt import Workbook 
+from datetime import datetime
   
-
-
 
 address='annual.xls'
 
@@ -77,12 +76,30 @@ for currency_id, currency_name in enumerate(currency_list) :
         row=sheet.row_values(i)
 
         if row[0] == currency_name:
-            print(row[0],row[2],row[8],row[9],row[38],row[39])
-            long_change_percent=(row[38]/(row[8]-row[38]))
-            short_change_percent=(row[39]/(row[9]-row[39]))
+
+            row[8]=int(row[8])
+            row[9]=int(row[9])
+            row[38]=int(row[38])
+            row[39]=int(row[39])
+
+            dt = datetime.fromordinal(datetime(1900, 1, 1).toordinal() + int(row[2]) - 2)
+            row[2]=dt.strftime('%Y-%m-%d')
+
+            
+
+            long_change_percent=(row[38]/(row[8]-row[38]))*100
+            long_change_percent=round(long_change_percent, 1)
+
+            short_change_percent=(row[39]/(row[9]-row[39]))*100
+            short_change_percent=round(short_change_percent, 1)
+
             net_position=row[8]-row[9]
+
             row_tuple=(row[0],row[2],row[8],row[9],row[38],row[39],long_change_percent,short_change_percent,net_position,)
             record_in_database(row_tuple)
+
+            print(row[0],row[2])
+
             for cell,cell_data in enumerate(row_tuple) :
                 sheet_name_obj[currency_id].write(row_id+1, cell,cell_data) 
                     
