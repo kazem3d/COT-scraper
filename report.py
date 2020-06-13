@@ -41,6 +41,14 @@ def record_in_database(data_tupel):
     curser.execute('INSERT INTO main (currency,date,long,short,long_change,short_change,long_change_percent,short_change_percent,net_position)  VALUES (?,?,?,?,?,?,?,?,?)' ,data_tupel)
     conn.commit()
 
+#function for removing all rows  from  table of database
+def delete_from_database(tabel_name):
+    curser.execute('DELETE FROM \'%s\'; ' %(tabel_name) )
+    conn.commit()
+
+#clear database at first
+delete_from_database('main')
+
 currency_list=[
     'JAPANESE YEN - CHICAGO MERCANTILE EXCHANGE',
     'SWISS FRANC - CHICAGO MERCANTILE EXCHANGE',
